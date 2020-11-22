@@ -11,11 +11,6 @@ export default {
       blog: {},
     }
   },
-  data() {
-    return {
-      blog: {},
-    }
-  },
   created() {
     // alert(this.$route.params.slug);
   },
@@ -29,7 +24,13 @@ export default {
   },
   methods: {
     async initDocsDetail(item) {
-      const { data } = await this.$http.get('blog/api/docs/'+item);
+      const { data } = await this.$http.get('blog/api/docs/'+item, 
+        // {
+        //   headers: {
+        //     'X-Auth-Token': '5GmaDRJFUXGVn7DniU0kuRkO6XZjIZ4LflwPSvMz'
+        //   }
+        // }
+      );
       if(data.data) {
         this.blog = marked(data.data.body);
       }

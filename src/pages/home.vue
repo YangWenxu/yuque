@@ -1,17 +1,16 @@
 <template>
-  <div class="container">
+  <el-container >
       <el-header>
         <cxd-header></cxd-header>
       </el-header>
-      <div class="context">
+      <el-container class="context">
         <el-aside>
           <div>
             <h5 class="leftHeader">设计体系</h5>
             <hr class="line">
             <el-menu
-              text-color="#fff"
-              active-text-color="#ffd04b"
-              default-active="2"
+              text-color="rgb(255,255,255,0.8)"
+              default-active="4"
               class="el-menu-vertical-demo"
               @open="handleOpen"
               @close="handleClose"
@@ -19,17 +18,18 @@
               <template v-for="(item) in navList" >
                 <el-submenu v-if="item.slug === '#'" :index="item.uuid" :key="item.uuid">
                   <template slot="title">
-                    <span>{{item.title}}</span>
+                    <i class="el-icon-menu"></i>
+                    <span class="hasChild">{{item.title}}</span>
                   </template>
                   <el-menu-item-group>
                     <template v-for="itm in item.second">
                       <el-submenu v-if="itm.child_uuid" :index="itm.uuid" :key="itm.uuid">
                         <template slot="title">
-                          <span>{{itm.title}}</span>
+                          <span class="hasChild" >{{itm.title}}</span>
                         </template>
                         
                         <el-menu-item v-for="itemChild in itm.third" :index="itemChild.uuid" :key="itemChild.uuid">
-                          <span slot="title" @click="handleItemClick">
+                          <span style="padding-left:40px !important;" slot="title" @click="handleItemClick">
                             <router-link :to ="{name:'bodyContent',params :{slug: itemChild.slug}}">
                               {{itemChild.title}}
                             </router-link>
@@ -61,16 +61,17 @@
 
         </el-aside>
         <el-main>
-          <router-view></router-view>
-          <!-- <div v-html="blog" class="markdown-body"></div> -->
+          <div class="content">
+            <router-view></router-view>
+          </div>
+          
         </el-main>
-      </div>
-  </div>
+      </el-container>
+  </el-container>
     
 </template>
 
 <script>
-import marked from 'marked'
 import cxdHeader from './cxdHeader.vue'
 export default {
   name: 'home',
@@ -85,16 +86,16 @@ export default {
   },
   mounted() {
     this.initData();
-    this.initDocsDetail('urlgz8');
-    const link = document.createElement('link')
-    link.type = 'text/css'
-    link.rel = 'stylesheet'
-    link.href = 'https://cdn.bootcss.com/github-markdown-css/2.10.0/github-markdown.min.css'
-    document.head.appendChild(link);
   },
   methods: {
     async initData() {
-      const { data, status} = await this.$http.get('/blog/api/bloglist');
+      const { data, status} = await this.$http.get('blog/api/bloglist', 
+        // {
+        //   headers: {
+        //     'X-Auth-Token': '5GmaDRJFUXGVn7DniU0kuRkO6XZjIZ4LflwPSvMz'
+        //   }
+        // }
+      );
       if(status === 200) {
         data.data.map(item => {
           if(item.depth == 1) {
@@ -118,30 +119,64 @@ export default {
     },
     handleItemClick() {
       window.location.reload();
-      // console.log(item);
-      // this.initDocsDetail(item);
-    },
-    async initDocsDetail(item) {
-      const { data } = await this.$http.get('blog/api/docs/'+item);
-      if(data.data) {
-        this.blog = marked(data.data.body);
-      }
     },
     handleOpen(key, keyPath) {
-      // console.log(key, keyPath);
+      console.log(key, keyPath);
     },
     handleClose(key, keyPath) {
-      // console.log(key, keyPath);
+      console.log(key, keyPath);
     }
     
   }
 }
 </script>
+<style>
+            .el-submenu__title {
+              padding-left: 0 !important;
+            }
+            .el-menu--inline {
+              padding-left: 0 !important;
+            }
 
+.el-submenu>.el-submenu__title .el-submenu__icon-arrow{
+    -webkit-transform: rotateZ(-90deg); 
+    -ms-transform: rotate(-90deg);
+    transform: rotateZ(-90deg); 
+}
+
+.el-submenu.is-opened>.el-submenu__title .el-submenu__icon-arrow{
+    -webkit-transform: rotateZ(0deg); 
+    -ms-transform: rotate(0deg);
+    transform: rotateZ(0deg); 
+}
+</style>
 <style lang="less" scoped>
-  .container {
-    margin: 0;
-    padding: 0;
+ul {
+  padding-inline-start: 0px !important;
+}
+.el-submenu>.el-submenu__title .el-submenu__icon-arrow{
+    -webkit-transform: rotateZ(-90deg); 
+    -ms-transform: rotate(-90deg);
+    transform: rotateZ(-90deg); 
+}
+
+.el-submenu.is-opened>.el-submenu__title .el-submenu__icon-arrow{
+    -webkit-transform: rotateZ(0deg); 
+    -ms-transform: rotate(0deg);
+    transform: rotateZ(0deg); 
+}
+  a:-webkit-any-link {
+    color: rgba(255,255,255,0.8);
+    cursor: pointer;
+    text-decoration: none;
+  }
+  a:-webkit-any-link:hover{
+    color: #fff;
+  }
+  .router-link-active {
+    color: #006BF8 !important;
+  }
+  .el-container {
     width: 100%;
     height: 100%;
     .el-header {
@@ -152,7 +187,7 @@ export default {
       line-height: 1px;
     }
     .context {
-      position: relative;
+      position: fixed;
       height: 100vh;
       width: 100%;
       top:65px;
@@ -160,15 +195,19 @@ export default {
         background-color: #1A1A1A;;
         color: #333;
         width: 25%;
-        position: fixed;
+        position: absolute;
         z-index: 410;
-        top:65px;
-        left: 8px;
-        flex: 0 0 auto;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 70px;
+        overflow-y:  scroll;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
         .leftHeader {
           height: 10px;
           color: white;
-          margin-left: 20px;
+          margin-left: 30px;
           padding-top: 20px;
           margin-top: 0px;
           font-size: 18px;
@@ -180,27 +219,48 @@ export default {
         .el-menu {
           height: 480px;
           font-size: 15px;
+          margin-left: 50px;
           .el-menu-item[data-v-56b687e3] {
             height: 35px;
             line-height: 35px;
-          }
+            padding-left: 0 !important;
+          }         
           .el-submenu {
             line-height: 35px;
-          }
-          .el-menu-item-group {
-            padding-left: 40px !important;
+            .hasChild:hover {
+              color: #fff;
+            }           
           }
         }
       }
+      .el-aside::-webkit-scrollbar {
+        display: none; /* Chrome Safari */
+      }
       .el-main {
         position: absolute;
+        top: 2px;
+        right: 8px;
+        bottom: 70px;
+        left: 0;
+        overflow-y:  scroll;
+        overflow-x: hidden;
         scroll-behavior: smooth;
-        margin-left: 25%;
+        margin-left: 23%;
         // margin-top: 65px;
-        background-color: #E9EEF3;
-        width: 75%;
-        // height: 100vh;
+        // background-color: #E9EEF3;
+        width: 76%;
+        background-color: #fff;
         color: #333;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .content {
+          height: 90%;
+          width: 85%;
+        }
+      }
+      .el-main::-webkit-scrollbar {
+        display: none; /* Chrome Safari */
       }
     }
   }

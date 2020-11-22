@@ -6,6 +6,10 @@ import bodyContent from "../pages/bodyContent.vue";
 Vue.use(VueRouter);
 
 const routes = [
+  {
+    path: '/',
+    redirect: '/bqr5yz'
+  },
   { 
     name: 'bodyContent', 
     path: '/:slug', 
