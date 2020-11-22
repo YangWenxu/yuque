@@ -1,13 +1,23 @@
 <template>
-  <div v-html="blog" class="markdown-body"></div>
+  <div>
+    <h2 class="title"> {{ title }}</h2>
+    <div v-html="blog" class="markdown-body"></div>
+  </div>
 </template>
 
 <script>
 import marked from 'marked'
 export default {
   name: 'bodyContent',
+  watch :{
+    '$route' (to){
+      console.log(to.params.slug);
+      window.location.reload();
+    }
+  },
   data() {
     return {
+      title: '',
       blog: {},
     }
   },
@@ -32,7 +42,10 @@ export default {
         // }
       );
       if(data.data) {
+        // this.blog = data.data.body;
+        this.title = data.data.title;
         this.blog = marked(data.data.body);
+        // console.log(this.blog);
       }
     },
   }
@@ -40,6 +53,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.title {
+  font-size: 30px;
+}
   // .content {
   //   float: right;
   //   height: 500px;

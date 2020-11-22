@@ -1,5 +1,5 @@
 <template>
-  <el-container >
+  <el-container class="container" >
       <el-header>
         <cxd-header></cxd-header>
       </el-header>
@@ -29,7 +29,7 @@
                         </template>
                         
                         <el-menu-item v-for="itemChild in itm.third" :index="itemChild.uuid" :key="itemChild.uuid">
-                          <span style="padding-left:40px !important;" slot="title" @click="handleItemClick">
+                          <span style="padding-left:40px !important;" slot="title" @click="handleItemClick(itemChild.slug)">
                             <router-link :to ="{name:'bodyContent',params :{slug: itemChild.slug}}">
                               {{itemChild.title}}
                             </router-link>
@@ -37,7 +37,7 @@
                         </el-menu-item>
                         
                       </el-submenu>
-                      <el-menu-item v-else :index="itm.uuid" :key="itm.uuid" @click="handleItemClick">
+                      <el-menu-item v-else :index="itm.uuid" :key="itm.uuid" @click="handleItemClick(itm.slug)">
                         <router-link :to ="{name:'bodyContent',params :{slug: itm.slug}}">
                           {{itm.title}}
                         </router-link>
@@ -48,7 +48,7 @@
                   
                 </el-submenu>
                 <el-menu-item v-else :index="item.uuid" :key="item.uuid">                  
-                  <span slot="title" @click="handleItemClick">
+                  <span slot="title" @click="handleItemClick(item.slug)">
                     <router-link :to ="{name:'bodyContent',params :{slug: item.slug}}">
                       {{item.title}}
                     </router-link>
@@ -117,8 +117,11 @@ export default {
         })
       }
     },
-    handleItemClick() {
-      window.location.reload();
+    handleItemClick(item) {
+      console.log(item);
+      // this.$router.push({ path: item })
+      // this.$forceUpdate();
+      // window.location.reload();
     },
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
@@ -131,40 +134,40 @@ export default {
 }
 </script>
 <style>
-            .el-submenu__title {
-              padding-left: 0 !important;
-            }
-            .el-menu--inline {
-              padding-left: 0 !important;
-            }
+  .el-submenu__title {
+    padding-left: 0 !important;
 
-.el-submenu>.el-submenu__title .el-submenu__icon-arrow{
-    -webkit-transform: rotateZ(-90deg); 
-    -ms-transform: rotate(-90deg);
-    transform: rotateZ(-90deg); 
-}
-
-.el-submenu.is-opened>.el-submenu__title .el-submenu__icon-arrow{
-    -webkit-transform: rotateZ(0deg); 
+  }
+  .el-icon-arrow-down:before {
+    content: '\e791';
+  }
+  .el-menu--inline {
+    padding-left: 0 !important;
+  }
+  .el-submenu__icon-arrow, .el-submenu__icon-arrow {
+    float: right;
+    margin-right: 100px;
+    margin-top: 10px;
+  }
+  .el-submenu > .el-submenu__title .el-submenu__icon-arrow {
+    -webkit-transform: rotateZ(0deg);
     -ms-transform: rotate(0deg);
-    transform: rotateZ(0deg); 
-}
+    transform: rotateZ(0deg);
+  }
+
+  .el-submenu.is-opened > .el-submenu__title .el-submenu__icon-arrow {
+    -webkit-transform: rotateZ(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotateZ(90deg);
+  }
 </style>
 <style lang="less" scoped>
-ul {
-  padding-inline-start: 0px !important;
-}
-.el-submenu>.el-submenu__title .el-submenu__icon-arrow{
-    -webkit-transform: rotateZ(-90deg); 
-    -ms-transform: rotate(-90deg);
-    transform: rotateZ(-90deg); 
-}
-
-.el-submenu.is-opened>.el-submenu__title .el-submenu__icon-arrow{
-    -webkit-transform: rotateZ(0deg); 
-    -ms-transform: rotate(0deg);
-    transform: rotateZ(0deg); 
-}
+  ul {
+    padding-inline-start: 0px !important;
+  }
+  li {
+    list-style:none;
+  }
   a:-webkit-any-link {
     color: rgba(255,255,255,0.8);
     cursor: pointer;
@@ -176,10 +179,12 @@ ul {
   .router-link-active {
     color: #006BF8 !important;
   }
-  .el-container {
+  .container {
     width: 100%;
     height: 100%;
     .el-header {
+      left: 0 !important;
+      top: 0 !important;
       position: fixed;
       width: 100%;
       height: 60px;
@@ -187,10 +192,11 @@ ul {
       line-height: 1px;
     }
     .context {
+      left: 0 !important;
       position: fixed;
       height: 100vh;
       width: 100%;
-      top:65px;
+      top:60px;
       .el-aside {
         background-color: #1A1A1A;;
         color: #333;
@@ -200,14 +206,14 @@ ul {
         top: 0;
         left: 0;
         right: 0;
-        bottom: 70px;
+        bottom: 61px;
         overflow-y:  scroll;
         overflow-x: hidden;
         scroll-behavior: smooth;
         .leftHeader {
           height: 10px;
           color: white;
-          margin-left: 30px;
+          margin-left: 50px;
           padding-top: 20px;
           margin-top: 0px;
           font-size: 18px;
@@ -218,7 +224,7 @@ ul {
         }
         .el-menu {
           height: 480px;
-          font-size: 15px;
+          font-size: 14px;
           margin-left: 50px;
           .el-menu-item[data-v-56b687e3] {
             height: 35px;
