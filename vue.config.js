@@ -90,8 +90,7 @@ module.exports = {
     // 查阅 https://github.com/vuejs/vue-docs-zh-cn/blob/master/vue-cli/cli-service.md#配置代理
     proxy: {
       '/api': {
-        // target: 'https://yuque.com/api/v2/repos/cxd/design-system',
-        target: 'http://localhost:4000',
+        target: 'https://yuque.com',
         changeOrigin: true,
         secure: false,
         // ws: true,
