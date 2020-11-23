@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: yangwenxu
+ * @Date: 2020-11-23 09:30:14
+ * @LastEditors: yangwenxu
+ * @LastEditTime: 2020-11-23 10:19:29
+-->
 <template>
   <div>
     <h2 class="title"> {{ title }}</h2>
@@ -7,13 +15,24 @@
 
 <script>
 import marked from 'marked'
+import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'bodyContent',
   watch :{
     '$route' (to){
       console.log(to.params.slug);
       window.location.reload();
-    }
+    },
+    getContext: {
+      handler(newValue) {
+        this.title = newValue.title;
+        this.blog = marked(newValue.body); 
+      },
+      deep: true,
+    },
+  },
+  computed: {
+    ...mapGetters(['getContext'])
   },
   data() {
     return {
@@ -21,11 +40,8 @@ export default {
       blog: {},
     }
   },
-  created() {
-    // alert(this.$route.params.slug);
-  },
   mounted() {
-    this.initDocsDetail(this.$route.params.slug);
+    this.requestContext(this.$route.params.slug)
     const link = document.createElement('link')
     link.type = 'text/css'
     link.rel = 'stylesheet'
@@ -33,21 +49,9 @@ export default {
     document.head.appendChild(link);
   },
   methods: {
-    async initDocsDetail(item) {
-      const { data } = await this.$http.get('blog/api/docs/'+item, 
-        // {
-        //   headers: {
-        //     'X-Auth-Token': '5GmaDRJFUXGVn7DniU0kuRkO6XZjIZ4LflwPSvMz'
-        //   }
-        // }
-      );
-      if(data.data) {
-        // this.blog = data.data.body;
-        this.title = data.data.title;
-        this.blog = marked(data.data.body);
-        // console.log(this.blog);
-      }
-    },
+    ...mapActions([
+      'requestContext'
+    ]),
   }
 }
 </script>
@@ -56,12 +60,4 @@ export default {
 .title {
   font-size: 30px;
 }
-  // .content {
-  //   float: right;
-  //   height: 500px;
-  //   background-color: #E9EEF3;
-  //   width: 60%;
-  //   color: #333;
-  //   // text-align: center;
-  // }
 </style>

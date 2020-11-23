@@ -10,11 +10,13 @@ const TOKEN = '5GmaDRJFUXGVn7DniU0kuRkO6XZjIZ4LflwPSvMz' // 在语雀的设置�
 const blogApiRouter = new Router()
 
 blogApiRouter.prefix('/blog/api')
+// blogApiRouter.prefix('/cxd/design-system')
 
 const CACHE_TIME = 30000
 const itemSlug = 'bqr5yz' || 'urlgz8';
 // 代理获取博客列表信息
-blogApiRouter.get('/bloglist', async ctx => {
+blogApiRouter.get('/toc', async ctx => {
+  console.log(ctx);
   await axios
     .get(
       `https://yuque.com/api/v2/repos/${YUQUE_USER_NAME}/${YUQUE_KNOWLEDGE_LIB}/toc`,

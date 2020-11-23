@@ -1,53 +1,53 @@
-import axios from "axios";
-// axios 配置
-// axios.defaults.timeout = 5000;
-// axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
-axios.defaults.baseURL = 'https://yuque.com/api/v2/repos/cxd/design-system';   
-// axios.defaults.baseURL = config.API_ROOT;
-// axios.defaults.baseURL = getBaseUrl(window.location.href); 
-axios.defaults.headers = { 'X-Auth-Token': '5GmaDRJFUXGVn7DniU0kuRkO6XZjIZ4LflwPSvMz' }
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: yangwenxu
+ * @Date: 2020-11-23 09:30:14
+ * @LastEditors: yangwenxu
+ * @LastEditTime: 2020-11-23 15:02:46
+ */
+import axios from 'axios';
+import config from '@/config';
+import { Message } from 'element-ui';
 
-//POST传参序列化
-axios.interceptors.request.use((config) => {
-  // if (config.method === 'post') {
-  //   config.data = qs.stringify(config.data);
-  // }
-  return config;
-}, (error) => {
-  return Promise.reject(error);
+const instance = axios.create({
+  baseURL: config.baseURL,
+  headers: { 'X-Auth-Token': '5GmaDRJFUXGVn7DniU0kuRkO6XZjIZ4LflwPSvMz' },
+  // timeout: 20000
 });
 
-//返回状态判断
-axios.interceptors.response.use(
-  response => {
-    // if (response.data && response.data.code) {
-    //   if (response.data.code === '2001') {
-    //     auth.logout()
-    //   }
+// request 拦截器
+instance.interceptors.request.use(
+  (config) => {
+    // 这里可以自定义一些config 配置
+    // if (config.params && !config.params.jsonname) {
+    //   config.headers['X-Auth-Token'] = '5GmaDRJFUXGVn7DniU0kuRkO6XZjIZ4LflwPSvMz';
     // }
-    return response;
+    return config;
   },
-  error => {
-    if (error.response) {
-      //全局ajax错误信息提示
-      //MessageBox({type:"error",message:error.response.data,title:"温馨提示",});
+  (error) => {
+    //  这里处理一些请求出错的情况
+
+    Promise.reject(error);
+  }
+);
+
+// response 拦截器
+instance.interceptors.response.use(
+  (response) => {
+    const res = response.data;
+    // 这里处理一些response 正常放回时的逻辑
+    if (res.code !== '200') {
+      Message.error('服务器异常');
     }
+
+    return res;
+  },
+  (error) => {
+    // 这里处理一些response 出错时的逻辑
+
     return Promise.reject(error);
-  });
+  }
+);
 
-export function fetch(url, config = { method: 'get' }) {
-  return axios.request({ ...config, url })
-  // return new Promise((resolve, reject) => {
-  //   axios.request({ ...config, url })
-  //     .then(response => {
-  //       resolve(response.data);
-  //     }, err => {
-  //       reject(err);
-  //     })
-  //     .catch((error) => {
-  //       reject(error)
-  //     })
-  // })
-}
-
-export default axios
+export default instance;

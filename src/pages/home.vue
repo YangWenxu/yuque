@@ -89,15 +89,9 @@ export default {
   },
   methods: {
     async initData() {
-      const { data, status} = await this.$http.get('blog/api/bloglist', 
-        // {
-        //   headers: {
-        //     'X-Auth-Token': '5GmaDRJFUXGVn7DniU0kuRkO6XZjIZ4LflwPSvMz'
-        //   }
-        // }
-      );
-      if(status === 200) {
-        data.data.map(item => {
+      const { data } = await this.$api.getSideMenuData();
+      if(data) {
+        data.map(item => {
           if(item.depth == 1) {
             item.second = [];
             this.navList.push(item);
