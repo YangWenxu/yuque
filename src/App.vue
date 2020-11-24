@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: yangwenxu
+ * @Date: 2020-11-23 09:30:14
+ * @LastEditors: yangwenxu
+ * @LastEditTime: 2020-11-24 10:28:49
+-->
 <template>
   <div id="app">
     <home></home>

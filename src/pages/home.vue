@@ -18,18 +18,17 @@
               <template v-for="(item) in navList" >
                 <el-submenu v-if="item.slug === '#'" :index="item.uuid" :key="item.uuid">
                   <template slot="title">
-                    <i class="el-icon-menu"></i>
                     <span class="hasChild">{{item.title}}</span>
                   </template>
                   <el-menu-item-group>
                     <template v-for="itm in item.second">
-                      <el-submenu v-if="itm.child_uuid" :index="itm.uuid" :key="itm.uuid">
+                      <el-submenu  v-if="itm.child_uuid" :index="itm.uuid" :key="itm.uuid">
                         <template slot="title">
-                          <span class="hasChild" >{{itm.title}}</span>
+                          <span style="padding-left:30px !important;"  class="hasChild" >{{itm.title}}</span>
                         </template>
                         
                         <el-menu-item v-for="itemChild in itm.third" :index="itemChild.uuid" :key="itemChild.uuid">
-                          <span style="padding-left:40px !important;" slot="title" @click="handleItemClick(itemChild.slug)">
+                          <span style="padding-left:60px !important;" slot="title" @click="handleItemClick(itemChild.slug)">
                             <router-link :to ="{name:'bodyContent',params :{slug: itemChild.slug}}">
                               {{itemChild.title}}
                             </router-link>
@@ -37,7 +36,7 @@
                         </el-menu-item>
                         
                       </el-submenu>
-                      <el-menu-item v-else :index="itm.uuid" :key="itm.uuid" @click="handleItemClick(itm.slug)">
+                      <el-menu-item style="padding-left:30px !important;" v-else :index="itm.uuid" :key="itm.uuid" @click="handleItemClick(itm.slug)">
                         <router-link :to ="{name:'bodyContent',params :{slug: itm.slug}}">
                           {{itm.title}}
                         </router-link>
@@ -130,7 +129,11 @@ export default {
 <style>
   .el-submenu__title {
     padding-left: 0 !important;
-
+    height: 35px;
+    line-height: 50px;
+  }
+  .el-menu-item-group__title {
+      padding: 0;
   }
   .el-icon-arrow-down:before {
     content: '\e791';
@@ -141,7 +144,7 @@ export default {
   .el-submenu__icon-arrow, .el-submenu__icon-arrow {
     float: right;
     margin-right: 100px;
-    margin-top: 10px;
+    margin-top: 1px;
   }
   .el-submenu > .el-submenu__title .el-submenu__icon-arrow {
     -webkit-transform: rotateZ(0deg);
@@ -220,13 +223,14 @@ export default {
           height: 480px;
           font-size: 14px;
           margin-left: 50px;
-          .el-menu-item[data-v-56b687e3] {
+          .el-menu-item {
             height: 35px;
-            line-height: 35px;
+            line-height: 50px;
             padding-left: 0 !important;
           }         
           .el-submenu {
-            line-height: 35px;
+            // line-height: 20px !important;
+            // height: 56px !important;
             .hasChild:hover {
               color: #fff;
             }           
