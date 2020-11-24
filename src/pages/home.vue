@@ -46,8 +46,8 @@
                   </el-menu-item-group>
                   
                 </el-submenu>
-                <el-menu-item v-else :index="item.uuid" :key="item.uuid">                  
-                  <span slot="title" @click="handleItemClick(item.slug)">
+                <el-menu-item v-else :index="item.uuid" :key="item.uuid" @click="handleItemClick(item.slug)">                  
+                  <span slot="title" >
                     <router-link :to ="{name:'bodyContent',params :{slug: item.slug}}">
                       {{item.title}}
                     </router-link>
@@ -114,7 +114,8 @@ export default {
     },
     handleItemClick(item) {
       console.log(item);
-      // this.$router.push({ path: item })
+      this.$router.push({ path: item })
+      // this.$router.push({name:'bodyContent',params :{slug: item.slug}})
       // this.$forceUpdate();
       // window.location.reload();
     },
