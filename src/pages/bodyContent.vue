@@ -4,7 +4,7 @@
  * @Author: yangwenxu
  * @Date: 2020-11-23 09:30:14
  * @LastEditors: yangwenxu
- * @LastEditTime: 2020-11-23 10:19:29
+ * @LastEditTime: 2020-11-24 11:28:56
 -->
 <template>
   <div>
@@ -21,7 +21,7 @@ export default {
   watch :{
     '$route' (to){
       console.log(to.params.slug);
-      window.location.reload();
+      this.contextInit();
     },
     getContext: {
       handler(newValue) {
@@ -41,17 +41,21 @@ export default {
     }
   },
   mounted() {
-    this.requestContext(this.$route.params.slug)
-    const link = document.createElement('link')
-    link.type = 'text/css'
-    link.rel = 'stylesheet'
-    link.href = 'https://cdn.bootcss.com/github-markdown-css/2.10.0/github-markdown.min.css'
-    document.head.appendChild(link);
+    this.contextInit();
   },
+
   methods: {
     ...mapActions([
       'requestContext'
     ]),
+    contextInit() {
+      this.requestContext(this.$route.params.slug)
+      const link = document.createElement('link')
+      link.type = 'text/css'
+      link.rel = 'stylesheet'
+      link.href = 'https://cdn.bootcss.com/github-markdown-css/2.10.0/github-markdown.min.css'
+      document.head.appendChild(link);
+    },
   }
 }
 </script>

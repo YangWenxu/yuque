@@ -61,7 +61,9 @@
         </el-aside>
         <el-main>
           <div class="content">
-            <router-view></router-view>
+            <keep-alive>
+              <router-view></router-view>
+            </keep-alive>
           </div>
           
         </el-main>

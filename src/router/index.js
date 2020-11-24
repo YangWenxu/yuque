@@ -1,3 +1,11 @@
+/*
+ * @Descripttion: 
+ * @version: 
+ * @Author: yangwenxu
+ * @Date: 2020-11-23 09:30:14
+ * @LastEditors: yangwenxu
+ * @LastEditTime: 2020-11-24 11:24:06
+ */
 import Vue from "vue";
 import VueRouter from "vue-router";
 
