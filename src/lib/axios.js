@@ -4,14 +4,13 @@
  * @Author: yangwenxu
  * @Date: 2020-11-23 09:30:14
  * @LastEditors: yangwenxu
- * @LastEditTime: 2020-11-23 15:02:46
+ * @LastEditTime: 2020-11-24 09:34:13
  */
 import axios from 'axios';
-import config from '@/config';
 import { Message } from 'element-ui';
 
 const instance = axios.create({
-  baseURL: config.baseURL,
+  baseURL: process.env.API_URL,
   headers: { 'X-Auth-Token': '5GmaDRJFUXGVn7DniU0kuRkO6XZjIZ4LflwPSvMz' },
   // timeout: 20000
 });
